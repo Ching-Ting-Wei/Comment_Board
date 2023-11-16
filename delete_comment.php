@@ -8,10 +8,10 @@
 		die('Check');
 	}
     $id = $_GET['id'];
-
-	$sql = "DELETE from comments WHERE id=?";
+    $username = $_SESSION['username'];
+	$sql = "DELETE from comments WHERE id=? and username=?";
 	$stmt = $conn->prepare($sql);
-	$stmt->bind_param("i", $id);
+	$stmt->bind_param("is", $id, $username);
 	$result = $stmt->execute();
 
 	if($result){
