@@ -80,6 +80,9 @@
                             <span class="card__author"><?php echo escape($row['nickname']); ?>
                             (@<?php echo escape($row['username']);?>)</span>
                             <span class="card__time"><?php echo $row['created_at']; ?></span>
+                            <?php if($row['username']===$username){?>
+                                <a href="update_comment.php?id=<?php echo $row['id'] ?>">Update comment</a>
+                            <?php }?>
                         </div>
                         <p class="card__content"><?php echo escape($row['content']); ?></p>
                     </div>
