@@ -1,7 +1,8 @@
 <?php
+	session_start();
 	require_once('./conn.php');
 	require_once('utils.php');
-	$user = getUserFromToken($_COOKIE['token']);
+	$user = getUserFromUsername($_SESSION['username']);
 	$nickname = $user['nickname'];
 	$content = $_POST['content'];
 

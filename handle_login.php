@@ -1,4 +1,5 @@
 <?php
+    session_start();
 	require_once('conn.php');
     require_once('utils.php');
 	$username = $_POST['username'];
@@ -13,11 +14,7 @@
 	$result = $conn->query($sql);
     
     if($result->num_rows > 0){
-        $token = generateToken();
-        $sql = sprintf("INSERT INTO tokens(token, username) values('%s', '%s')",$token, $username);
-        $result = $conn->query($sql);
-        $expire = time() + 3600 * 24;
-        setcookie("token", $token, $expire);
+        $_SESSION["username"] = $username;
         header("Location: index.php");
     }else{
         header('Location: ./login.php?errCode=2');
