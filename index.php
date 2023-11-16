@@ -82,6 +82,7 @@
                             <span class="card__time"><?php echo $row['created_at']; ?></span>
                             <?php if($row['username']===$username){?>
                                 <a href="update_comment.php?id=<?php echo $row['id'] ?>">Update comment</a>
+                                <a href="delete_comment.php?id=<?php echo $row['id'] ?>">Delete comment</a>
                             <?php }?>
                         </div>
                         <p class="card__content"><?php echo escape($row['content']); ?></p>
