@@ -1,12 +1,15 @@
 <?php
     require_once("conn.php");
+    require_once("utils.php");
+    $username = NULL;
+    if(!empty($_COOKIE['token'])){
+        $user = getUserFromToken($_COOKIE['token']);
+        $username = $user['username'];
+    }
+
     $result = $conn->query("SELECT * FROM comments ORDER BY id DESC");
     if(!$result){
         die('Error' . $conn->error);
-    }
-    $username = NULL;
-    if(!empty($_COOKIE['username'])){
-        $username = $_COOKIE['username'];
     }
 ?>
 
@@ -30,6 +33,7 @@
                     <a class="board__btn" href="login.php">log in</a>
                 <?php }else{ ?>
                     <a class="board__btn" href="logout.php">log out</a>
+                    <h3>Hello <?php echo $username; ?></h3>
                 <?php } ?>
             </div>
             <h1 class="board__title">Comments</h1>
