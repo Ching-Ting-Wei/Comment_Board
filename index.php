@@ -4,6 +4,10 @@
     if(!$result){
         die('Error' . $conn->error);
     }
+    $username = NULL;
+    if(!empty($_COOKIE['username'])){
+        $username = $_COOKIE['username'];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -20,23 +24,29 @@
             </strong>
          </header>
          <main class="board">
-            <a class="board__btn" href="register.php">sign up</a>
-            <a class="board__btn" href="login.php">log in</a>
+            <div>
+                <?php if(!$username){ ?>
+                    <a class="board__btn" href="register.php">sign up</a>
+                    <a class="board__btn" href="login.php">log in</a>
+                <?php }else{ ?>
+                    <a class="board__btn" href="logout.php">log out</a>
+                <?php } ?>
+            </div>
             <h1 class="board__title">Comments</h1>
             <form class="board__new-comment-form" method="POST" action="handle_add_comment.php" onsubmit="return validateForm()">
-                <div class="board__nickname">
-                    <span>Nickname:</span>
-                    <input type="text" name="nickname" id="nickname"/>
-                </div>
                 <textarea name="content" rows="5" id="content"></textarea>
-                <input class="board__submit-btn" type="submit" />
+                <?php if($username){ ?>
+                    <input class="board__submit-btn" type="submit" />
+                <?php }else{?>
+                    <h3>Please log in</h3>
+                 <?php }?>    
             </form>
+           
             <script>
                 function validateForm() {
-                    var nickname = document.getElementById('nickname').value;
                     var content = document.getElementById('content').value;
-                    if (nickname.trim() === '' || content.trim() === '') {
-                        alert('comment or nickname is empty');
+                    if (content.trim() === '') {
+                        alert('comment  is empty');
                         return false;
                     }
                     return true; 

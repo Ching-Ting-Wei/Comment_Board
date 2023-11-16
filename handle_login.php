@@ -12,7 +12,9 @@
 	$result = $conn->query($sql);
     
     if($result->num_rows > 0){
-
+        $expire = time() + 3600 * 24;
+        setcookie("username", $username, $expire);
+        header("Location: index.php");
     }else{
         header('Location: ./login.php?errCode=2');
     }
