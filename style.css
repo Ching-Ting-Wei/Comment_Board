@@ -102,4 +102,11 @@ body{
 
 .error {
     color: #a20606;
-  }
+}
+  
+.hide{
+    display: none;
+}
+.board__nickname-form{
+    margin-top: 20px;
+}

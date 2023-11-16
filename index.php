@@ -3,8 +3,10 @@
     require_once("conn.php");
     require_once("utils.php");
     $username = NULL;
+    $user = NULL;
     if(!empty($_SESSION["username"])){
         $username = $_SESSION["username"];
+        $user = getUserFromUsername($username);
     }
     $stmt = $conn->prepare("SELECT * FROM comments ORDER BY id DESC");
     $result = $stmt->execute();
@@ -34,7 +36,15 @@
                     <a class="board__btn" href="login.php">log in</a>
                 <?php }else{ ?>
                     <a class="board__btn" href="logout.php">log out</a>
-                    <h3>Hello <?php echo $username; ?></h3>
+                    <span class="update-nickname board__btn">Update nickname</span> </h3> 
+                    <form class="board__new-comment-form hide board__nickname-form" method="POST" action="update_user.php">
+                        <div class="board__nickname">
+                            <span>New nickname: </span>
+                            <input type="text" name="nickname" />
+                        </div>
+                        <input class="board__submit-btn" type="submit"/>
+                    </form>
+                    <h3>Hello <?php echo $user['nickname']; ?> 
                 <?php } ?>
             </div>
             <h1 class="board__title">Comments</h1>
@@ -75,5 +85,12 @@
                 <?php } ?>
             </section>
          </main>
+         <script>
+            var btn = document.querySelector('update-nickname')
+            btn,addEventListener('click', function(){
+                var form = document.querySelector('.board__nickname-form')
+                form.classList.toggle('hide')
+            })
+        </script>
     </body>
 </html>
