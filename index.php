@@ -8,7 +8,8 @@
         $username = $_SESSION["username"];
         $user = getUserFromUsername($username);
     }
-    $stmt = $conn->prepare("SELECT * FROM comments ORDER BY id DESC");
+    $stmt = $conn->prepare('SELECT C.id as id, C.content as content, C.created_at as created_at, U.nickname as nickname, U.username as username'.
+    ' FROM comments as C LEFT JOIN users as U on C.username = U.username ORDER BY C.id DESC');
     $result = $stmt->execute();
     if(!$result){
         die('Error' . $conn->error);
@@ -76,7 +77,8 @@
                     <div class="card__avatar"></div>
                     <div class="card__body">
                         <div class="card__info">
-                            <span class="card__author"><?php echo escape($row['nickname']); ?></span>
+                            <span class="card__author"><?php echo escape($row['nickname']); ?>
+                            (@<?php echo escape($row['username']);?>)</span>
                             <span class="card__time"><?php echo $row['created_at']; ?></span>
                         </div>
                         <p class="card__content"><?php echo escape($row['content']); ?></p>
@@ -86,8 +88,8 @@
             </section>
          </main>
          <script>
-            var btn = document.querySelector('update-nickname')
-            btn,addEventListener('click', function(){
+            var btn = document.querySelector('.update-nickname')
+            btn.addEventListener('click', function(){
                 var form = document.querySelector('.board__nickname-form')
                 form.classList.toggle('hide')
             })
