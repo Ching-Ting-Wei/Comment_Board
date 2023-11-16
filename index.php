@@ -8,8 +8,15 @@
         $username = $_SESSION["username"];
         $user = getUserFromUsername($username);
     }
+    $page = 1;
+    if(!empty($_GET["page"])){
+        $page = $_GET["page"];  
+    }
+    $item_per_page = 5;
+    $offset = ($page - 1) * $item_per_page;
     $stmt = $conn->prepare('SELECT C.id as id, C.content as content, C.created_at as created_at, U.nickname as nickname, U.username as username'.
-    ' FROM comments as C LEFT JOIN users as U on C.username = U.username ORDER BY C.id DESC');
+    ' FROM comments as C LEFT JOIN users as U on C.username = U.username ORDER BY C.id DESC limit ? offset ?');
+    $stmt->bind_param('ii', $item_per_page, $offset);
     $result = $stmt->execute();
     if(!$result){
         die('Error' . $conn->error);
@@ -90,6 +97,29 @@
                 </div>
                 <?php } ?>
             </section>
+            <div class="board__hr"></div>
+            <?php
+                 $stmt = $conn->prepare('SELECT count(id) as count from comments');
+                 $result = $stmt->execute();
+                 $result = $stmt->get_result();
+                 $row = $result->fetch_assoc();
+                 $count = $row['count'];
+                 $total_page = ceil($count / $item_per_page);
+            ?>
+            <div class = "page-info">
+                 <span> It has <?php echo $count;?> comments, page </span> 
+                 <span> <?php echo $page?> / <?php echo $total_page?> </span>
+            </div>
+            <div class="paginator">
+                <?php if($page != 1){?>
+                    <a href="index.php?page=1">First page</a>
+                    <a href="index.php?page=<?php echo $page - 1 ?>"> Previous page</a>
+                <?php }?>
+                <?php if($page != $total_page){?>
+                    <a href="index.php?page=<?php echo $page + 1 ?>">Next page</a>
+                    <a href="index.php?page=<?php echo $total_page?>">Last page</a>
+                <?php }?>
+            </div>
          </main>
          <script>
             var btn = document.querySelector('.update-nickname')
