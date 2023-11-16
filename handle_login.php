@@ -5,20 +5,27 @@
 	$username = $_POST['username'];
     $password = $_POST['password'];
 	
-	if(empty($password) || empty($username)){
+	if(empty($username)){
 		die('Check');
 	}
 
-	$sql = sprintf("SELECT * FROM users WHERE username='%s' and password='%s'",$username, $password);
+	$sql = sprintf("SELECT * FROM users WHERE username='%s'",$username);
 	
 	$result = $conn->query($sql);
-    
-    if($result->num_rows > 0){
+    if($result->num_rows === 0){
+        header('Location: ./login.php?errCode=2');
+        exit();
+    }
+
+    $row = $result->fetch_assoc();
+    if(password_verify( $password, $row['password'])){
         $_SESSION["username"] = $username;
         header("Location: index.php");
     }else{
         header('Location: ./login.php?errCode=2');
     }
+
+   
     
 
 ?>
