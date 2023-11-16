@@ -20,6 +20,8 @@
             </strong>
          </header>
          <main class="board">
+            <a class="board__btn" href="register.php">sign up</a>
+            <a class="board__btn" href="login.php">log in</a>
             <h1 class="board__title">Comments</h1>
             <form class="board__new-comment-form" method="POST" action="handle_add_comment.php" onsubmit="return validateForm()">
                 <div class="board__nickname">
