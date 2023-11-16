@@ -10,8 +10,10 @@
 		die('Check');
 	}
 
-	$sql = sprintf("INSERT INTO comments(nickname, content) VALUES('%s', '%s')", $nickname, $content);
-	$result = $conn->query($sql);
+	$sql = "INSERT INTO comments(nickname, content) VALUES(?, ?)";
+	$stmt = $conn->prepare($sql);
+	$stmt->bind_param("ss", $nickname, $content);
+	$result = $stmt->execute();
 
 	if($result){
 		header('Location: ./index.php');

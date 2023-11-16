@@ -9,9 +9,12 @@
 		die('Check');
 	}
 
-	$sql = sprintf("SELECT * FROM users WHERE username='%s'",$username);
-	
-	$result = $conn->query($sql);
+	$sql = "SELECT * FROM users WHERE username= ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+
+	$result = $stmt->execute();
+    $result = $stmt->get_result();
     if($result->num_rows === 0){
         header('Location: ./login.php?errCode=2');
         exit();

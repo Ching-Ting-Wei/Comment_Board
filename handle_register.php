@@ -9,9 +9,10 @@
 		die('Check');
 	}
 
-	$sql = sprintf("INSERT INTO users(nickname, username, password) VALUES('%s', '%s', '%s')", $nickname, $username, $password);
-	
-	$result = $conn->query($sql);
+	$sql = "INSERT INTO users(nickname, username, password) VALUES(?, ?, ?)";
+	$stmt = $conn->prepare($sql);
+	$stmt->bind_param("sss", $nickname, $username, $password);
+	$result = $stmt->execute();
     
 	if(!$result){
         $code = $conn->errno;

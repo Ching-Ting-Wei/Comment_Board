@@ -6,11 +6,12 @@
     if(!empty($_SESSION["username"])){
         $username = $_SESSION["username"];
     }
-
-    $result = $conn->query("SELECT * FROM comments ORDER BY id DESC");
+    $stmt = $conn->prepare("SELECT * FROM comments ORDER BY id DESC");
+    $result = $stmt->execute();
     if(!$result){
         die('Error' . $conn->error);
     }
+    $result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
