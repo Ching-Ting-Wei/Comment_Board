@@ -15,6 +15,9 @@
         $result = $conn->query($sql);
         $row = $result->fetch_assoc();
         return $row;
-    
+    }
+
+    function escape($str ){
+        return htmlspecialchars($str, ENT_QUOTES);
     }
 ?>
